@@ -1,6 +1,6 @@
 {
   "name": "@heat/step-functions-local",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "main": "src/index.js",
   "private": false,
@@ -13,10 +13,10 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/jest",
-    "patch": "yarn publish --patch --access=public",
-    "minor": "yarn publish --minor --access=public",
-    "major": "yarn publish --major --access=public",
-    "deploy": "yarn publish --access=public"
+    "patch": "if yarn test; then yarn publish --patch --access=public; fi",
+    "minor": "if yarn test; then yarn publish --minor --access=public; fi",
+    "major": "if yarn test; then yarn publish --major --access=public; fi",
+    "deploy": "if yarn test; then yarn publish --access=public; fi"
   },
   "jest": {
     "testEnvironment": "node",
