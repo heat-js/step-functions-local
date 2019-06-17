@@ -1,18 +1,52 @@
 
 const { spawn } = require('child_process');
+const path 		= require('path');
 
-module.exports.spawn = function(port = 8083) {
+module.exports.spawn = function({
+	accountId = '123456789012',
+	region = 'us-east-1',
+	lambdaEndpoint = null,
+	sqsEndpoint = null,
+	snsEndpoint = null } = {}
+) {
+	const libPath = path.join(
+		__dirname,
+		'../lib/2019-06-05/'
+	);
+
+	const jarPath = path.join(
+		libPath,
+		'StepFunctionsLocal.jar'
+	);
+
 	const args = [
-		'-Djava.library.path=../lib/2019-06-05/',
+		`-Djava.library.path=${libPath}`,
 		'-jar',
-		'../lib/2019-06-05/StepFunctionsLocal.jar'
+		jarPath
 	]
 
-	if (port !== null) {
-		args.push('-port', port.toString());
+	if (accountId !== null) {
+		args.push('-account', accountId.toString());
+	}
+
+	if (region !== null) {
+		args.push('-region', region.toString());
+	}
+
+	if (lambdaEndpoint !== null) {
+		args.push('-lambdaEndpoint', lambdaEndpoint.toString());
+	}
+
+	if (sqsEndpoint !== null) {
+		args.push('-sqsEndpoint', sqsEndpoint.toString());
+	}
+
+	if (snsEndpoint !== null) {
+		args.push('-snsEndpoint', snsEndpoint.toString());
 	}
 
 	return spawn('java', args, {
-		cwd: __dirname
+		cwd: 	__dirname,
+		shell: 	true
 	});
 }
