@@ -7,7 +7,8 @@ module.exports.spawn = function({
 	region = 'us-east-1',
 	lambdaEndpoint = null,
 	sqsEndpoint = null,
-	snsEndpoint = null } = {}
+	snsEndpoint = null,
+	waitTimeScale = 0 } = {}
 ) {
 	const libPath = path.join(
 		__dirname,
@@ -43,6 +44,10 @@ module.exports.spawn = function({
 
 	if (snsEndpoint !== null) {
 		args.push('-snsEndpoint', snsEndpoint.toString());
+	}
+
+	if (waitTimeScale !== null) {
+		args.push('-waitTimeScale', waitTimeScale.toString());
 	}
 
 	return spawn('java', args, {
